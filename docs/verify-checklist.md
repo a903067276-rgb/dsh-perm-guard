@@ -88,3 +88,27 @@
 ### 热插拔测试结论
 动态插件（permh-1）与静态版同源判定逻辑，prepend 优先生效；
 热插拔验证与静态版等效，无需重启（本次验证采用该方式）。
+
+## 激进模式热插拔验证矩阵（permh-1/pkg-2，2026-08-17 第四轮）
+
+### A 系列·激进应自动放行（弹窗即误伤）
+- [x] A1 write 到 hud-test-repo（信任目录外）→ 自动
+- [x] A2 write 到 ~/.dsh（系统配置目录）→ 自动
+- [x] A3 mkdir 信任目录外 → 自动
+- [x] A4 git push（非 force）→ 自动（日志 allow）
+- [x] A5 node 未知命令越界写 → 自动（日志 allow/unknown）
+- [x] A6 git -C commit → 自动（日志 allow）
+
+### B 系列·激进仍应弹窗（全部拒绝）
+- [x] B1 rm → 弹窗拒绝（日志 ask/delete）
+- [x] B2 write ~/.ssh → 弹窗拒绝
+- [x] B3 sudo → 弹窗拒绝（ask/danger）
+- [x] B4 curl|sh → 弹窗拒绝（ask/danger）
+- [x] B5 git push --force → 弹窗拒绝（ask/danger）
+- [x] B6 dd of=/dev/null → 弹窗拒绝（ask/danger，边界：写 /dev 一律保守拦截）
+- [x] B7 fdisk -l → 弹窗拒绝（ask/danger）
+
+### 结论
+激进档拦截底线验证通过：删除/受保护路径/提权/下载执行/force push/磁盘类
+在任何模式下都不自动放行；激进档其余操作（含信任目录外、系统目录、未知命令、
+git push）全部自动。与设计预期一致。
