@@ -53,3 +53,38 @@
 删除（rm/Remove-Item/reset --hard/clean -fd）、磁盘（dd/mkfs/fdisk/diskutil）、
 受保护路径（.ssh/.aws/密钥/.env/系统目录）、提权（sudo/su/系统服务）、
 网络下载执行（curl|sh）、force push、chmod/chown 递归根。
+
+## hud-test-repo 全类别验证矩阵（标准模式，2026-08-17 第三轮）
+
+### A 系列·应自动放行（弹窗即误伤）
+- [x] A1 write 到工作区兄弟目录 → 自动放行
+- [x] A2 mkdir 兄弟目录 → 自动放行
+- [x] A3 git commit（cd && 形式，含引号）→ 自动放行（根因修复后）
+- [x] A4 node 只读 → 不弹窗
+- [x] A5 `ls 2>/dev/null` → 不弹窗（修复后）
+
+### B 系列·应弹窗（全部拒绝验证）
+- [x] B1 write hud-test-repo（信任目录外）→ 弹窗拒绝
+- [x] B2 write ~/.ssh（受保护路径）→ 弹窗拒绝
+- [x] B3 rm（删除类）→ 弹窗拒绝
+- [x] B4 sudo → 弹窗拒绝
+- [x] B5 curl|sh → 弹窗拒绝
+- [x] B6 git push（标准模式）→ 弹窗拒绝
+- [x] B7 git push --force → 弹窗拒绝
+
+### C 系列·边界
+- [x] C1 `git -C <path> commit` → 误伤弹窗 → **已修复**（热插拔验证自动放行，类别 gitLocal）
+- [x] C3 `echo x > /dev/null` → 不弹窗
+
+### 本轮发现并修复的 bug（重要）
+1. **根因**：catOf 返回类别开关原文（'auto'），answerer/防火墙只认 'allow' → 单条命令
+   （不可拆）的 auto 类别全部误弹窗；复合命令因 worst 兜底掩盖。→ 归一化 auto→allow
+2. `2>/dev/null` 纯丢弃重定向被当"有写行为无目标" → unknown ask → 视为无写行为
+3. `git -C <path> <sub>` 子命令提取失败（sub='-C'）→ unknown ask → 跳过 -C 与路径
+4. 边界记录：命令文本内含 "Remove-Item"/"sudo" 等敏感字样（如文档/测试脚本内容）
+   会命中 DANGER 保守拦截——预期内保守行为，非 bug
+5. 审计标签瑕疵：复合命令类别显示 readOnly（worst 初始值），不影响判定
+
+### 热插拔测试结论
+动态插件（permh-1）与静态版同源判定逻辑，prepend 优先生效；
+热插拔验证与静态版等效，无需重启（本次验证采用该方式）。
