@@ -38,3 +38,18 @@
 - 动态版（permg-1）已停止；静态版经 profile bundles + 插件自带 cordis.patch.yml 挂载（id: perm-guard）
 - 配置默认值即用户习惯：commit/merge/文件编辑/构建/只读 = 自动；删除/受保护/提权/网络执行/推送/发布/磁盘 = 人工
 - 规则边界：网络无 OS 级断网（仅 curl|sh 模式）；终端/MCP/子代理无审批机制
+
+## 补充验证（激进模式 + 模式同步，2026-08-17 第二轮重启后）
+
+- [x] 激进档 bash：跨目录/系统目录 mkdir 自动放行（跳过信任目录限制）
+- [x] 激进档 fs（write/edit）：~/.dsh 下写文件自动放行（审计 allowed-once/fileEdit）
+- [x] 模式切换同步类别：POST standard → privilege/gitPush 等回 ask；POST aggressive → 除 delete/protected/disk 外全 auto
+- [x] 配置持久化：重启后 mode 保持（读 ~/.dsh/perm-guard.json）
+- [x] 修复：write/edit 分支接 mode（此前漏改导致激进档 fs 仍弹窗）
+- [x] 修复：/dev/null 不再误判受保护路径
+- [x] 修复：切换模式重置类别开关（UI 有提示）
+
+### 激进档拦截底线（永不自动）
+删除（rm/Remove-Item/reset --hard/clean -fd）、磁盘（dd/mkfs/fdisk/diskutil）、
+受保护路径（.ssh/.aws/密钥/.env/系统目录）、提权（sudo/su/系统服务）、
+网络下载执行（curl|sh）、force push、chmod/chown 递归根。
