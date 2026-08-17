@@ -1,17 +1,28 @@
 {
   "name": "dsh-perm-guard",
   "version": "0.1.0",
-  "description": "权限管理插件：DSH 会话权限档位管理与守卫（开发中）",
-  "private": true,
+  "description": "Auto 自动审批插件：DSH 中间档权限——信任目录内自动放行、危险操作人工确认（类别开关可调）",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
+  "files": [
+    "lib",
+    "cordis.patch.yml"
+  ],
   "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
     "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ],
       "platform": "web"
     }
   },
@@ -19,7 +30,18 @@
     "deepseek-harness",
     "dsh-plugin",
     "permission",
-    "guard"
+    "guard",
+    "auto-approve"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "dsh": ">=0.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/a903067276-rgb/dsh-perm-guard.git"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1-rc.1"
+  }
 }

@@ -1,0 +1,7 @@
+# dsh-perm-guard：Auto 自动审批（中间档权限）
+# 安装方式：软链到 ~/.dsh/profiles/web/node_modules/dsh-perm-guard + profile package.json
+#           bundles 列表加 dsh-perm-guard（或发布后 dsh plugin --profile web add）
+# 生效方式：重启 dsh web（bash ~/.dsh/restart-dsh-web.sh）
+- insert:
+    - id: perm-guard
+      name: 'dsh-perm-guard'
