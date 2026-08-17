@@ -1,0 +1,25 @@
+{
+  "name": "dsh-perm-guard",
+  "version": "0.1.0",
+  "description": "权限管理插件：DSH 会话权限档位管理与守卫（开发中）",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web"
+    }
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh-plugin",
+    "permission",
+    "guard"
+  ],
+  "license": "MIT"
+}
