@@ -112,3 +112,15 @@
 激进档拦截底线验证通过：删除/受保护路径/提权/下载执行/force push/磁盘类
 在任何模式下都不自动放行；激进档其余操作（含信任目录外、系统目录、未知命令、
 git push）全部自动。与设计预期一致。
+
+## 安全修复验证（v0.1.1，2026-08-17 第五轮）
+
+awesome-dsh-plugin PR #1316 评审发现信任边界穿越漏洞，已修复并发布 v0.1.1：
+
+- [x] 漏洞：inTrust 字符串前缀匹配，/trust/../../../etc/cron.d/x 可穿越自动放行；
+      PROTECTED 前后矛盾（.ssh 拦穿越、/etc 不拦）；信任目录内 symlink 可绕过
+- [x] 修复：realOf = resolve(expandHome) → realpathSync（不存在回退 resolve）；
+      inTrust 双侧规范化比较；bash 目标与 fs 目标规范化后再查 PROTECTED
+- [x] 单测 7/7：穿越攻击 / ../../../../etc/passwd / 正常文件 / 子目录 / 新建文件回退 / 兄弟目录 / ~ 展开
+- [x] 实机验证：穿越路径 write → ask-human/outside 弹窗（修复前自动放行）
+- [x] 正式安装升级 v0.1.1（dsh plugin update）+ 重启加载确认
