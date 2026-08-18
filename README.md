@@ -1,4 +1,4 @@
-# dsh-perm-guard
+# dsh-perm-guard 🛡️
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
@@ -7,14 +7,15 @@
 **Auto-approval permission guard** for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`) web — the "middle tier" between `workspace-write` (asks too often) and `danger-full-access` (too open). Common operations like cross-directory edits, `git commit`/`merge` and builds run **without approval prompts**; destructive operations (deletes, disk ops, privilege escalation, `curl|sh`) **always ask for human confirmation**.
 
 *Unofficial project: independently developed and maintained by a community member, not an official DeepSeek product.*
+
+## Screenshot
+
 ![Auto button in the composer tool row](assets/screenshot-auto-button.png)
 
 ![Auto Permissions settings page](assets/screenshot-settings.png)
 
 ## Features
 
-- **Auto approval answerer** — intercepts every approval request before the host prompt, classifies the actual command/target, and auto-answers `allowed-once` for safe operations (13ms, no popup) or forwards to the human prompt for risky ones.
-- **Command-level firewall** (`tools/pre-execute`) — dangerous categories are intercepted *before* the sandbox even rejects them.
 - **Two modes** (switchable in the settings page, persisted):
   - **Standard** — auto-approve inside the trust directories (workspace, sibling directories, custom list); outside + risky operations prompt.
   - **Aggressive** — location-unrestricted: only destructive operations still prompt.
@@ -30,7 +31,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-perm-guard#main"
 
 Then restart `dsh web`. Update: `dsh plugin --profile web update dsh-perm-guard`, restart.
 
-> Requires `pnpm` in PATH (`dsh plugin` is a pnpm forwarder).
+Manual install fallback: see [docs/install.md](docs/install.md).
 
 ## Usage
 
@@ -65,6 +66,33 @@ Switching modes resets the category switches to that mode's defaults (adjustable
 - Force push: `git push --force` / `-f` (rewrites history)
 - Writes to protected paths
 
+## Platform support
+
+| Platform | Status |
+|---|---|
+| macOS | ✅ development environment |
+| Linux | ⚠️ expected to work |
+| Windows | ⚠️ expected to work |
+
+## Requirements
+
+- DSH web (the approval system this plugin guards)
+- `pnpm` in PATH — `dsh plugin` is a pnpm forwarder (needed for install/update)
+
+## How it works
+
+- **Interception before the host prompt** — every approval request is intercepted before the host prompt; the actual command/target is classified, and safe operations are auto-answered `allowed-once` (~13ms, no popup), risky ones are forwarded to the human prompt.
+- **Command-level firewall** (`tools/pre-execute`) — dangerous categories are intercepted *before* the sandbox even rejects them.
+- **Classification pipeline** — the two modes set per-category defaults (Standard: trust directories; Aggressive: location-unrestricted), and the 11 tri-state switches (auto / ask / deny) fine-tune each category.
+- **Audit + persistence** — every decision is recorded with timestamp and command summary; approval decisions are always persisted via the host's `approval/asked` + `approval/decided` event pair.
+
+## Notes
+
+- DSH's sandbox has **no OS-level network fence** (unlike Codex): the plugin can only detect download-execute patterns (`curl|sh`) in command text, not block other network traffic.
+- Terminal sessions, subagent creation, model calls and MCP tools are outside the approval system entirely.
+- Commands whose *text* contains danger words (e.g. echoing `"Remove-Item"`, or scripts embedding rule sources) are conservatively intercepted — expected, rare in practice.
+- The audit list is in-memory (60 entries) and resets on restart; approval decisions themselves are always persisted via the host's `approval/asked` + `approval/decided` event pair.
+
 ## Coverage
 
 - **All approval entry points in DSH are covered**: `bash`, `pwsh` (PowerShell), and the `write`/`edit` file tools. MCP tools and other read-only tools have no approval mechanism and are unaffected.
@@ -97,13 +125,6 @@ Switching modes resets the category switches to that mode's defaults (adjustable
 
 - `trustedDirs`: extra absolute paths auto-approved in Standard mode (default: workspace + its sibling directories).
 - Trust directories are ignored in Aggressive mode (location-unrestricted).
-
-## Known limitations
-
-- DSH's sandbox has **no OS-level network fence** (unlike Codex): the plugin can only detect download-execute patterns (`curl|sh`) in command text, not block other network traffic.
-- Terminal sessions, subagent creation, model calls and MCP tools are outside the approval system entirely.
-- Commands whose *text* contains danger words (e.g. echoing `"Remove-Item"`, or scripts embedding rule sources) are conservatively intercepted — expected, rare in practice.
-- The audit list is in-memory (60 entries) and resets on restart; approval decisions themselves are always persisted via the host's `approval/asked` + `approval/decided` event pair.
 
 ## Development
 
