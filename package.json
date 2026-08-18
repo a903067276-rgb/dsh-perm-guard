@@ -1,6 +1,6 @@
 {
   "name": "dsh-perm-guard",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Auto 自动审批插件：DSH 中间档权限——信任目录内自动放行、危险操作人工确认（类别开关可调）",
   "type": "module",
   "main": "lib/index.js",
