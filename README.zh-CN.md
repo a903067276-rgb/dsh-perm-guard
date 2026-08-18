@@ -6,6 +6,7 @@
 
 面向 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）web 的**「Auto 自动审批」中间档权限插件**——介于 `workspace-write`（弹窗太频繁）与 `danger-full-access`（权限太高）之间。跨目录编辑、`git commit`/`merge`、构建等常规操作**不再弹窗**；破坏性操作（删除、磁盘、提权、`curl|sh`）**一律人工确认**。
 
+*非官方项目：社区成员独立开发维护，非 DeepSeek 官方产品。*
 ![输入框工具行的 Auto 按钮](assets/screenshot-auto-button.png)
 
 ![Auto 权限设置页](assets/screenshot-settings.png)

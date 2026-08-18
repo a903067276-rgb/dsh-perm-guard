@@ -6,6 +6,7 @@
 
 **Auto-approval permission guard** for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`) web — the "middle tier" between `workspace-write` (asks too often) and `danger-full-access` (too open). Common operations like cross-directory edits, `git commit`/`merge` and builds run **without approval prompts**; destructive operations (deletes, disk ops, privilege escalation, `curl|sh`) **always ask for human confirmation**.
 
+*Unofficial project: independently developed and maintained by a community member, not an official DeepSeek product.*
 ![Auto button in the composer tool row](assets/screenshot-auto-button.png)
 
 ![Auto Permissions settings page](assets/screenshot-settings.png)
