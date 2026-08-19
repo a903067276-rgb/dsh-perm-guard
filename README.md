@@ -97,7 +97,7 @@ Switching modes resets the category switches to that mode's defaults (adjustable
 
 - **All approval entry points in DSH are covered**: `bash`, `pwsh` (PowerShell), and the `write`/`edit` file tools. MCP tools and other read-only tools have no approval mechanism and are unaffected.
 - **Compound commands** (`a && rm -rf x`): pure-word chains are split and evaluated per subcommand, taking the strictest result; chains containing variables/redirection/wildcards are treated conservatively as one unit.
-- **Unknown commands** fall back to "ask" in Standard mode (safe default) and "allow" in Aggressive mode.
+- **Unknown commands** always fall back to "ask" regardless of mode (safe default) — the classifier never auto-allows what it cannot parse.
 
 ## How it compares to Claude Code / Codex
 

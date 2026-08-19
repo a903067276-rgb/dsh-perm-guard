@@ -97,7 +97,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-perm-guard#main"
 
 - **DSH 全部审批入口已覆盖**：`bash`、`pwsh`（PowerShell）、`write`/`edit` 文件工具。MCP 工具与其他只读工具无审批机制，不受影响。
 - **复合命令**（`a && rm -rf x`）：纯词链拆分逐条判定取最严；含变量/重定向/通配的链整体保守处理。
-- **未知命令**：标准模式回退"人工"（安全默认），激进模式放行。
+- **未知命令**：无论何种模式一律回退为“ask”（安全默认）——分类器无法解析的命令绝不自动放行。
 
 ## 与 Claude Code / Codex 对照
 
