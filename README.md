@@ -79,6 +79,7 @@ Switching modes resets the category switches to that mode's defaults (adjustable
 ## Requirements
 
 - DSH web >= 0.1.0-rc.7 (the approval system this plugin guards)
+- **rc.6 users:** install the frozen `rc6-compat` tag instead: `dsh plugin add github:a903067276-rgb/dsh-perm-guard#rc6-compat` (no maintenance; upgrade to rc.7+ recommended)
 - `pnpm` in PATH — `dsh plugin` is a pnpm forwarder (needed for install/update)
 
 ## How it works
