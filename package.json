@@ -1,7 +1,7 @@
 {
   "name": "dsh-perm-guard",
   "version": "0.2.5",
-  "description": "Auto \u81ea\u52a8\u5ba1\u6279\u63d2\u4ef6\uff1aDSH \u4e2d\u95f4\u6863\u6743\u9650\u2014\u2014\u4fe1\u4efb\u76ee\u5f55\u5185\u81ea\u52a8\u653e\u884c\u3001\u5371\u9669\u64cd\u4f5c\u4eba\u5de5\u786e\u8ba4\uff08\u7c7b\u522b\u5f00\u5173\u53ef\u8c03\uff09",
+  "description": "Auto 自动审批插件：DSH 中间档权限——信任目录内自动放行、危险操作人工确认（类别开关可调）",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -42,6 +42,8 @@
     "url": "https://github.com/a903067276-rgb/dsh-perm-guard.git"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "^4.0.1-rc.1"
+    "@deepseek-ai/cordis": "^4.0.1-rc.1",
+    "@deepseek-ai/dsh-settings": "^0.1.0-rc.7",
+    "@deepseek-ai/schemastery": "^3.18.1"
   }
 }
