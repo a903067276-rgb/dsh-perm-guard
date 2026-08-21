@@ -78,7 +78,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-perm-guard#main"
 
 ## 环境要求
 
-- DSH web（≥ 0.1.0-rc.7）（本插件守卫的审批体系所在）
+- DSH web（仅 0.1.0-rc.6，冻结兼容分支，不再维护；请使用 ≥ 0.1.0-rc.7 的维护版本）（本插件守卫的审批体系所在）
 - PATH 里有 `pnpm`——`dsh plugin` 是 pnpm 转发器（安装/更新必需）
 
 ## 工作原理
