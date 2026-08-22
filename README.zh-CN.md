@@ -78,8 +78,8 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-perm-guard#main"
 
 ## 环境要求
 
-- DSH web（≥ 0.1.0-rc.7）（本插件守卫的审批体系所在）
-- rc.6 用户：请安装冻结 tag：`dsh plugin add github:a903067276-rgb/dsh-perm-guard#rc6-compat`（不再维护，强烈建议升级 rc.7+）
+- DSH web（≥ 0.1.0-rc.6）（本插件守卫的审批体系所在）
+- **版本兼容**：0.1.0-rc.6 及以上（含 0.1.1-rc.1/rc.2）——直接安装 `main` 即可；设置卡片通过双字段注册同时满足 rc.6（id 契约）与 rc.7+（key 契约）；`rc6-compat` 冻结标签已退役（仅作历史标签保留）。
 - PATH 里有 `pnpm`——`dsh plugin` 是 pnpm 转发器（安装/更新必需）
 
 ## 工作原理
