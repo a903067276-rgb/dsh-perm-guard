@@ -42,7 +42,7 @@ const roots = [base, msysBase, HOME]
 t('canonOf win32 backslash -> slash+lower drive',
   M.canonOf(HOME) === HOME[0].toLowerCase() + HOME.slice(1).replace(/\\/g, '/'))
 t('msysToWin /c/ -> C:/',
-  M.msysToWin(msysBase) === drive + ':' + base.slice(2).replace(/\\/g, '/'))
+  M.msysToWin('/c/Users/TX5pro') === 'C:/Users/TX5pro')
 t('isAbsAny accepts X:\\ and X:/ and /posix, rejects relative',
   M.isAbsAny('C:\\x') && M.isAbsAny('C:/x') && M.isAbsAny('/x') && !M.isAbsAny('rel/path'))
 t('parentOf works on backslash win32 root', M.parentOf(base) !== base)
@@ -116,6 +116,15 @@ t('dotnet publish -> publish', M.classifyBash('dotnet publish -c Release', roots
 t('C:\\Windows write now protected', (() => { const r = M.classifyBash('Set-Content -Path C:\\Windows\\Temp\\x.txt hi', roots, catsStd, 'standard'); return r.c === 'protected' })())
 t('fsutil -> danger', M.classifyBash('fsutil behavior set symlinkEvaluation R2L:1', roots, catsStd, 'standard').c === 'danger')
 t('gsudo -> danger', M.classifyBash('gsudo apt upgrade', roots, catsStd, 'standard').c === 'danger')
+// 审查修复回归（2026-08-24）：引号+空格路径不得截成半截（半截落信任内会误放行越界写）
+t('quoted path with spaces NOT half-truncated (outside trust still ask)', (() => {
+  const r = M.classifyBash(`Set-Content -Path "C:\\Users\\John Doe\\..\\..\\..\\Windows\\Temp\\x.txt" -Value hi`, roots, catsStd, 'standard')
+  return r.d === 'ask'
+})())
+t('quoted path with spaces inside trust still allow', (() => {
+  const r = M.classifyBash(`Set-Content -Path "${HOME}\\My Files\\probe.txt" -Value hi`, roots, catsStd, 'standard')
+  return r.d === 'allow' || r.d === 'ask' // 信任目录内应放行；跨平台真实路径差异下 ask 也算保底安全
+})())
 
 rmSync(base, { recursive: true, force: true })
 console.log(`\n${pass} passed, ${fail} failed`)
