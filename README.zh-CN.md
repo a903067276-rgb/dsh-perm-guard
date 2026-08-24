@@ -74,7 +74,14 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-perm-guard#main"
 |---|---|
 | macOS | ✅ 开发环境 |
 | Linux | ⚠️ 预期可用 |
-| Windows | ⚠️ 预期可用 |
+| Windows | ✅ 已适配并实测（win32 路径识别 + PowerShell 词表，2026-08-24） |
+
+### Windows 说明
+
+- 信任目录支持三种绝对路径写法：`C:\…`、`C:/…`、`/c/…`（MSYS/Git-Bash），保存时统一规范化为 `C:/…` 形态；非法条目保存时红字提示，不再静默丢弃。
+- 分类器覆盖 PowerShell 常用词表：管道/格式化类（`Select-Object` 等）按只读处理；`Invoke-RestMethod`/`iwr` 归网络类；`Stop-Process`、注册表 `reg add`、`schtasks /create` 等归提权类（锁定人工确认）；`vssadmin delete shadows`、`bcdedit`、`diskpart` 列为硬红线。
+- `gh` CLI 只读子命令（`view`/`list`/`status` 等）自动放行，写操作转人工。
+- 带 `sandbox_permissions` 的提权重试只弹一次确认卡（不再同一条命令弹两张）。
 
 ## 环境要求
 
