@@ -86,15 +86,17 @@ Switching modes resets the category switches to that mode's defaults (adjustable
 ## Requirements
 
 - DSH web >= 0.1.0-rc.6 (the approval system this plugin guards)
-- **Version compatibility** (best effort — the settings card uses dual-field `key`+`id` registration to satisfy both rc.6 (`id`) and rc.7+ (`key`); verified locally on rc.6/rc.8/0.1.1-rc.2, **not guaranteed on every DSH version**):
-  - DSH 0.1.0-rc.6 and newer (incl. 0.1.1-rc.1/rc.2): try `main` (default).
+- **Version compatibility** (best effort — the settings card uses dual-field `key`+`id` registration to satisfy both rc.6 (`id`) and rc.7+ (`key`); verified locally on rc.6/rc.8/0.1.1-rc.2/**0.1.5-rc.1**, **not guaranteed on every DSH version**):
+  - DSH 0.1.0-rc.6 and newer (incl. the 0.1.1 / 0.1.2 / 0.1.5 lines): try `main` (default) or `v0.2.9` and newer.
   - Conservative fallbacks (the last pre-0.1.1 build): DSH 0.1.0-rc.7/rc.8 → `v0.2.7` (`dsh plugin add github:a903067276-rgb/dsh-perm-guard#v0.2.7`); DSH 0.1.0-rc.6 → frozen `rc6-compat` tag (no maintenance).
+  - ⚠️ **On DSH 0.1.5+ do not install `v0.2.8`**: it imports the removed `settingsNamespace` export and makes the whole plugin tree fail to load (the web app will not boot). Use `main` / `v0.2.9`+ instead.
 - `pnpm` in PATH — `dsh plugin` is a pnpm forwarder (needed for install/update)
 - **Maintenance policy**: this plugin keeps evolving with the latest DSH releases; compatibility with older DSH versions is best-effort only and not guaranteed going forward.
 
 ## How it works
 
 - **Interception before the host prompt** — every approval request is intercepted before the host prompt; the actual command/target is classified, and safe operations are auto-answered `allowed-once` (~13ms, no popup), risky ones are forwarded to the human prompt.
+- **Call lookup** — an approval request carries **no tool arguments**, so the plugin resolves the real arguments from the session log by `callId`; DSH 0.1.5 removed `Session.events`, so it now reads the public `snapshotEvents()` (older hosts keep the `events` path). When neither is available it **always falls back to the human prompt** (safe default, never auto-allow).
 - **Command-level firewall** (`tools/pre-execute`) — dangerous categories are intercepted *before* the sandbox even rejects them.
 - **Classification pipeline** — the two modes set per-category defaults (Standard: trust directories; Aggressive: location-unrestricted), and the 11 tri-state switches (auto / ask / deny) fine-tune each category.
 - **Audit + persistence** — every decision is recorded with timestamp and command summary; approval decisions are always persisted via the host's `approval/asked` + `approval/decided` event pair.
