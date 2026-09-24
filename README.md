@@ -91,6 +91,8 @@ Switching modes resets the category switches to that mode's defaults (adjustable
   - Conservative fallbacks (the last pre-0.1.1 build): DSH 0.1.0-rc.7/rc.8 → `v0.2.7` (`dsh plugin add github:a903067276-rgb/dsh-perm-guard#v0.2.7`); DSH 0.1.0-rc.6 → frozen `rc6-compat` tag (no maintenance).
   - ⚠️ **On DSH 0.1.5+ do not install `v0.2.8`**: it imports the removed `settingsNamespace` export and makes the whole plugin tree fail to load (the web app will not boot). Use `main` / `v0.2.9`+ instead.
 - `pnpm` in PATH — `dsh plugin` is a pnpm forwarder (needed for install/update)
+  - ✅ **DSH 0.1.7 and later — use this release (`v0.3.0`)**: it declares `peerDependencies: {"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0"}`, so a mismatched host refuses to load it with an explicit reason instead of failing quietly. Settings move to the 0.1.7 model (plugin `Config`, live-editable `.volatile()` fields), so changes apply without a restart.
+  - ⚠️ **DSH 0.1.5 and older — install the previous tag `v0.2.10`**: that line keeps the old behavior and uses no 0.1.7-only API.
 - **Maintenance policy**: this plugin keeps evolving with the latest DSH releases; compatibility with older DSH versions is best-effort only and not guaranteed going forward.
 
 ## How it works

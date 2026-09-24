@@ -91,6 +91,8 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-perm-guard#main"
   - 保守回退（升级前的最后版本）：DSH 0.1.0-rc.7/rc.8 → `v0.2.7`（`dsh plugin add github:a903067276-rgb/dsh-perm-guard#v0.2.7`）；DSH 0.1.0-rc.6 → 冻结 `rc6-compat`（不再维护）。
   - ⚠️ **DSH 0.1.5+ 请勿使用 `v0.2.8`**：该版本 import 了官方已移除的 `settingsNamespace` 导出，在 0.1.5 上会**整个插件树加载失败**（web 起不来）。0.1.5 用户请用 `main` / `v0.2.9` 及以上。
 - PATH 里有 `pnpm`——`dsh plugin` 是 pnpm 转发器（安装/更新必需）
+  - ✅ **DSH 0.1.7 及以后——装本版（`v0.3.0`）**：它声明了 `peerDependencies: {"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0"}`，宿主不匹配会明确拒绝加载并说明原因，不再静默出错。配置迁到 0.1.7 的插件 `Config`（`.volatile()` 字段可即时生效），改完不用重启。
+  - ⚠️ **DSH 0.1.5 及更早——请装上一版 tag `v0.2.10`**：那条线保持原行为，不含任何 0.1.7 专用 API。
 - **维护策略**：本插件将持续跟随 DSH 最新版本演进；对旧版 DSH 的兼容仅是尽力而为、不保证长期有效。
 
 ## 工作原理
