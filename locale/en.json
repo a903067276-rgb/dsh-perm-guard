@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Perm Guard",
+    "description": "Middle-tier permissions: auto-approve trusted operations, always confirm destructive ones."
+  }
+}

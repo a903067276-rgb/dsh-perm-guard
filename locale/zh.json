@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "权限守卫",
+    "description": "介于 workspace-write 与 danger-full-access 之间的中间档权限：常规操作免弹窗，破坏性操作一律人工确认。"
+  }
+}
