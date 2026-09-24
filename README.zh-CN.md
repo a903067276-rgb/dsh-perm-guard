@@ -28,7 +28,10 @@
 ## 安装
 
 ```sh
+# DSH 0.1.7 及以后：
 dsh plugin --profile web add "github:a903067276-rgb/dsh-perm-guard#main"
+# DSH 0.1.5 及更早（本版需要 0.1.7+）：
+# dsh plugin --profile web add "github:a903067276-rgb/dsh-perm-guard#v0.2.10"
 ```
 
 然后重启 `dsh web`。更新：`dsh plugin --profile web update dsh-perm-guard`，重启。
@@ -93,6 +96,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-perm-guard#main"
 - PATH 里有 `pnpm`——`dsh plugin` 是 pnpm 转发器（安装/更新必需）
   - ✅ **DSH 0.1.7 及以后——装本版（`v0.3.0`）**：它声明了 `peerDependencies: {"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0"}`，宿主不匹配会明确拒绝加载并说明原因，不再静默出错。配置迁到 0.1.7 的插件 `Config`（`.volatile()` 字段可即时生效），改完不用重启。
   - ⚠️ **DSH 0.1.5 及更早——请装上一版 tag `v0.2.10`**：那条线保持原行为，不含任何 0.1.7 专用 API。
+  - ⛔ **旧版本插件（≤ `v0.2.10`）在 0.1.7 上不受支持**——在插件管理页停用→再启用会报 `duplicate route`，配置也改不动。插件要跟宿主一起升。
 - **维护策略**：本插件将持续跟随 DSH 最新版本演进；对旧版 DSH 的兼容仅是尽力而为、不保证长期有效。
 
 ## 工作原理
