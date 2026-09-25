@@ -19,6 +19,12 @@
     "locale"
   ],
   "dsh": {
+    "compatibility": {
+      "dshReleases": {
+        "0.1.7-rc.1": "compatible",
+        "0.1.7-rc.2": "compatible"
+      }
+    },
     "bundle": {
       "patch": "./cordis.patch.yml"
     },
@@ -39,7 +45,8 @@
   ],
   "license": "MIT",
   "engines": {
-    "dsh": ">=0.0.1"
+    "dsh": ">=0.0.1",
+    "node": ">=22.19"
   },
   "repository": {
     "type": "git",
