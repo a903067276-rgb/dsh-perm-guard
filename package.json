@@ -22,7 +22,8 @@
     "compatibility": {
       "dshReleases": {
         "0.1.7-rc.1": "compatible",
-        "0.1.7-rc.2": "compatible"
+        "0.1.7-rc.2": "compatible",
+        "0.2.0-rc.1": "compatible"
       }
     },
     "bundle": {
@@ -53,7 +54,7 @@
     "url": "https://github.com/a903067276-rgb/dsh-perm-guard.git"
   },
   "peerDependencies": {
-    "@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0",
+    "@deepseek-ai/dsh": "^0.1.7-rc.1 || ^0.2.0-rc.1",
     "@deepseek-ai/cordis": "^4.0.1-rc.1",
     "@deepseek-ai/schemastery": "^3.18.3"
   }
