@@ -10,6 +10,15 @@
 
 *Unofficial project: independently developed and maintained by a community member, not an official DeepSeek product.*
 
+> ## ⚠️ DISCONTINUED (2026-10-01)
+>
+> **DSH 0.2 ships a built-in per-call auto approval** (`@deepseek-ai/dsh-experimental-auto-review` — the `Auto review` entry in the permission selector, shipped with the app since 0.2.0-rc.2) that covers this plugin's core scenario. The author has moved to the official option, so this plugin is **no longer maintained**.
+>
+> - **Last release: `v0.4.2`** (verified on DSH 0.2.0-rc.2). No further fixes or compatibility work.
+> - It has been removed from the author's two profiles (desktop / web). You may keep installing it, but compatibility going forward is at your own risk.
+> - How they differ: this plugin is a **deterministic, zero-token rule set** (command classifier + trust directories; works on any host, incl. headless / CLI), whereas the official Auto review is a **per-call LLM review** (needs the Web layer, costs one extra model request per tool call, marked experimental by the vendor).
+> - Thanks to everyone who used it.
+
 ## Screenshot
 
 ![Auto button in the composer tool row](assets/screenshot-auto-button.png)
@@ -98,7 +107,7 @@ Switching modes resets the category switches to that mode's defaults (adjustable
   - ✅ **DSH 0.2.0-rc.1 — verified compatible**: the peer range now covers both lines (`^0.1.7-rc.1 || ^0.2.0-rc.1`) and `dsh.compatibility.dshReleases` adds `"0.2.0-rc.1": "compatible"` — verified on a real 0.2.0-rc.1 host and a shadow instance. Since 0.2 the host gates profile bundles on peer compatibility and **skips the whole bundle** when the declared range misses the running host, so this range is what keeps the plugin loading.
   - ⚠️ **DSH 0.1.5 and older — install the previous tag `v0.2.10`**: that line keeps the old behavior and uses no 0.1.7-only API.
   - ⛔ **Old plugin releases (up to `v0.2.10`) are not supported on 0.1.7** — disabling and re-enabling it from the plugin manager throws `duplicate route`, and configuration edits no longer apply. Upgrade the plugin together with the host.
-- **Maintenance policy**: this plugin keeps evolving with the latest DSH releases; compatibility with older DSH versions is best-effort only and not guaranteed going forward.
+- **Maintenance policy**: **discontinued (2026-10-01)** — no longer tracks new DSH releases; compatibility of the existing releases with older DSH versions is best-effort only and not guaranteed going forward.
 
 ## How it works
 
